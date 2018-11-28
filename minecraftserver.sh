@@ -6,7 +6,7 @@ startscript="start.sh"
 updatescript="update.sh"
 
 echo "Grummus's Minecraft server launcher v1.0"
-echo "	Badly scripted by Graham Klatt 2018"
+echo "	Cobbled together by Graham Klatt 2018"
 echo
 
 # Test to see if Screen is installed
