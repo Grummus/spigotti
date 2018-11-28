@@ -9,6 +9,12 @@ echo "Grummus's Minecraft server launcher v1.0"
 echo "	Cobbled together by Graham Klatt 2018"
 echo
 
+if [ ! -d "$serverdir" ]; then
+	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
+	read -p "Press [Enter] to close..."
+	exit 1
+fi
+
 # Test to see if Screen is installed
 echo "Checking dependencies..."
 if ! [ -x "$(command -v screen)" ]; then
