@@ -13,6 +13,6 @@ chmod +x $serverpath/start.sh
 cd $serverpath
 ./update.sh
 echo "Install Complete!"
-echo "!!!Change the serverdir variable on the following screen to the one you just chose!!!
+echo "!!!Change the serverdir variable on the following screen to the one you just chose!!!"
 read -p "Press [Enter]..."
 nano ~/Desktop/minecraftserver.sh
