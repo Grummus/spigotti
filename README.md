@@ -15,4 +15,4 @@ Uses GNU Screen
 -Run ./install.sh  
 -Enter the serverdir you used before, the server type, and the Minecraft version
 
-When you SSH onto your server just run ./minecraftserver.sh and it'll do the rest ;)  
+When you SSH onto your server just run 'minecraftserver' and it'll do the rest ;)  
