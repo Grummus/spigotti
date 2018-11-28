@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # server variables
-serverdir="/home/graham/server"
+serverdir="/path/to/server" # <------CHANGE THIS
 startscript="start.sh"
 updatescript="update.sh"
 
