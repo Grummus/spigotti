@@ -15,6 +15,7 @@ cp update.sh $serverpath/update.sh
 cp start.sh $serverpath/start.sh
 chmod +x $serverpath/update.sh
 chmod +x $serverpath/start.sh
+cp .screenrc $serverpath/.screenrc
 cd $serverpath
 ./update.sh
 echo "Install Complete!"
