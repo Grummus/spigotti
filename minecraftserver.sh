@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # server variables
-serverdir="/path/to/server" # <------CHANGE THIS
-startscript="start.sh"
+serverdir="/home/graham/server" # <------CHANGE THIS
+startscript=".screenrc"
 updatescript="update.sh"
 
 echo "Grummus's Minecraft server launcher v1.0"
@@ -31,7 +31,7 @@ fi
 # if none are found, create a new one and run the start script
 # otherwise prompt to reattatch to currently open screen
 echo "Checking for any running servers..."
-if screen -list | grep 'No Sockets found'; then
+if ! screen -list | grep 'minecraft'; then
 	cd $serverdir
 	echo "You're good to go!"
 	# ask to update
@@ -39,11 +39,10 @@ if screen -list | grep 'No Sockets found'; then
 	if [ $updateyn == "y" ]; then
 		./$updatescript
 	fi
-	screen -L -S "minecraft" ./$startscript
+	screen -L -S "minecraft" -c $startscript
 else
-	screen -list
 	echo
 	read -p "Press [Enter] to reattatch or [CTRL+C] to cancel!"
-	screen -D -r
+	screen -D -r minecraft
 fi
 
