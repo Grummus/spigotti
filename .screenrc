@@ -1,9 +1,0 @@
-layout new
-screen ./start.sh
-split -v
-focus right
-screen s-tui
-split
-focus down
-screen
-focus left
