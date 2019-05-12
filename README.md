@@ -1,5 +1,5 @@
 # Graham's Crappy Server Launcher
-A little something I made so I can SSH into my Minecraft Server using GNU Screen  
+A little something I made so I can SSH into my Minecraft Server using TMUX 
 
 # Features:  
 -Streamlines the Spigot update process  
