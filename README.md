@@ -6,8 +6,7 @@ A little something I made so I can SSH into my Minecraft Server using TMUX
 -Makes it easy to change allocated memory  
 -Allows you to SSH into your server console without stopping it  
 
-# To use:  
--Change the 'serverdir' variable in minecraftserver.sh to where you want your minecraft server to be  
+# To use:   
 -Run 'chmod +x install.sh'  
 -Run ./install.sh  
 
