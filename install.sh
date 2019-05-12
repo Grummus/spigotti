@@ -5,11 +5,10 @@ if [ ! -d "$serverpath" ]; then
   echo "Making serverdir..."
   mkdir $serverpath
 fi
-echo "!!!Change the serverdir variable on the following screen!!!"
-read -p "Press [Enter]..."
-nano minecraftserver.sh
+
 echo "Copying files..."
 sudo cp minecraftserver.sh /usr/bin/minecraftserver
+sudo sed -i 's@<serverpath>@'"$serverpath"'@' /usr/bin/minecraftserver
 sudo chmod +x /usr/bin/minecraftserver
 cp update.sh $serverpath/update.sh
 cp start.sh $serverpath/start.sh

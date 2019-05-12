@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # server variables
-serverdir="/home/graham/servertest" # <------CHANGE THIS
+serverdir="<serverpath>" # <------CHANGE THIS
 updatescript="update.sh"
 
 echo "Grummus's Minecraft server launcher 2.0"
