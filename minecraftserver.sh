@@ -1,12 +1,11 @@
 #!/bin/bash
 
 # server variables
-serverdir="/home/graham/server" # <------CHANGE THIS
-startscript=".screenrc"
+serverdir="/home/graham/servertest" # <------CHANGE THIS
 updatescript="update.sh"
 
-echo "Grummus's Minecraft server launcher v1.0"
-echo "	Cobbled together by Graham Klatt 2018"
+echo "Grummus's Minecraft server launcher 2.0"
+echo "	Cobbled together by Graham Klatt 2019"
 echo
 
 if [ ! -d "$serverdir" ]; then
@@ -17,32 +16,27 @@ fi
 
 # Test to see if Screen is installed
 echo "Checking dependencies..."
-if ! [ -x "$(command -v screen)" ]; then
-	echo -e "\e[91mScreen is not installed!\e[0m"
-	read -p "Install it? [y/n] " screenyn
-	if [ $screenyn == 'y' ]; then
-		sudo apt install screen -y
-	else
-		exit 1
-	fi
+if ! [ -x "$(command -v tmux)" ]; then
+	echo -e "\e[91mtmux is not installed!\e[0m"
+	exit 1
 fi
 
 # check for any active screens
 # if none are found, create a new one and run the start script
 # otherwise prompt to reattatch to currently open screen
 echo "Checking for any running servers..."
-if ! screen -list | grep 'minecraft'; then
+if ! tmux ls | grep 'minecraft'; then
 	cd $serverdir
 	echo "You're good to go!"
-	# ask to update
-	read -p "Update server JAR? [y/n] " updateyn
-	if [ $updateyn == "y" ]; then
-		./$updatescript
-	fi
-	screen -L -S "minecraft" -c $startscript
+	read -p "Press [Enter] to continue..."
+	tmux new-session -s minecraft -d './start.sh'
+	tmux split-window -h './info.sh'
+	tmux split-window -v 'bash'
+	tmux select-pane -L 
+	tmux attach -t minecraft
 else
 	echo
 	read -p "Press [Enter] to reattatch or [CTRL+C] to cancel!"
-	screen -D -r minecraft
+	tmux attach -t minecraft
 fi
 
