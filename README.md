@@ -5,6 +5,7 @@ A little something I made so I can SSH into my Minecraft Server using TMUX
 -Streamlines the Spigot update process  
 -Makes it easy to change allocated memory  
 -Allows you to SSH into your server console without stopping it  
+-Shows online players and any custom ascii art in top right corner  
 
 # To use:   
 -Run 'chmod +x install.sh'  
