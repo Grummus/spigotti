@@ -14,7 +14,7 @@ if [ ! -d "$serverdir" ]; then
 	exit 1
 fi
 
-# Test to see if Screen is installed
+# Test to see if tmux is installed
 echo "Checking dependencies..."
 if ! [ -x "$(command -v tmux)" ]; then
 	echo -e "\e[91mtmux is not installed!\e[0m"
