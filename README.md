@@ -1,4 +1,4 @@
-# Graham's Crappy Server Launcher
+# MCTMUX
 [![release](https://img.shields.io/badge/release-v0.2--beta-brightgreen.svg)](http://github.com/Grummus/mctmux/releases)  
 
 A little something I made so I can SSH into my Minecraft Server using TMUX 
