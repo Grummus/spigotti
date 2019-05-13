@@ -13,7 +13,7 @@ java -version
 echo
 echo -e "\e[93m[Ctrl+A] \e[96mthen \e[93m[D] \e[96mto detach"
 echo -e "type \e[93m'screen -r' \e[96mto reattatch\e[0m"
-echo 
+echo
 read -p "Press [Enter] to start the server with the current settings..."
 
 # Start the Server with minram and maxram values
@@ -22,3 +22,4 @@ echo -e "\e[91mServer stopped!\e[0m"
 read -p "Press [Enter] to close this window..."
 echo "bye bye!"
 sleep 1
+tmux kill-session -t minecraft
