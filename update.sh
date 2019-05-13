@@ -15,6 +15,8 @@ echo Beginning Build Process...
 java -jar BuildTools.jar --rev $mcver
 echo Copying server JAR...
 cp $servertype-$mcver.jar ../$servertype-$mcver.jar
+export servertype=$servertype
+export mcver=$mcver
 echo
 echo "Done!"
 read -p "Press [Enter] to Continue..."
