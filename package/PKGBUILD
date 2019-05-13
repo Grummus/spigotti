@@ -1,0 +1,83 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# Maintainer: Graham Klatt <grahamklatt@msn.com>
+pkgname=mctmux
+pkgver=2.0.0
+pkgrel=1
+epoch=
+pkgdesc="A handy dandy launcher for a spigot server"
+arch=('any')
+url="http://github.com/Grummus/mctmux"
+license=('GPL')
+groups=()
+depends=('tmux' 'nodejs' 'npm' 'wget' 'jdk-openjdk')
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=mctmux.install
+changelog=
+source=('git+https://github.com/Grummus/mctmux.git')
+noextract=()
+md5sums=('SKIP')
+
+validpgpkeys=()
+
+#prepare() {
+#	serverpath=/etc/minecraftserver
+#	cd $pkgname
+#	chmod +x update.sh
+#	mkdir -p $pkgdir$serverpath
+#	cp update.sh $pkgdir$serverpath
+#}
+
+build() {
+	read -p "Build spigot jar now? [y/n] " buildyn
+	if [[ $buildyn =~ ^[Yy] ]]; then
+		serverpath=/etc/minecraftserver
+		cd $pkgname
+		chmod +x update.sh
+		./update.sh
+	fi
+	export buildyn=$buildyn
+}
+
+package() {
+	serverpath=/etc/minecraftserver
+	cd $pkgname
+	#read -p "Enter desired install location: (eg. /etc/minecraftserver) " serverpath
+	if [ ! -d "$pkgdir$serverpath" ]; then
+	  echo "Making serverdir..."
+	  mkdir -p $pkgdir/etc/minecraftserver
+	fi
+	mkdir -p $pkgdir/usr/bin
+
+	cp minecraftserver.sh $pkgdir/usr/bin/minecraftserver
+	sed -i 's@<serverpath>@'"$serverpath"'@' $pkgdir/usr/bin/minecraftserver
+
+	cp update.sh $pkgdir$serverpath/update.sh
+	cp start.sh $pkgdir$serverpath/start.sh
+	chmod +x $pkgdir$serverpath/update.sh
+	chmod +x $pkgdir$serverpath/start.sh
+
+
+	cp package.json $pkgdir$serverpath/package.json
+	cp info.js $pkgdir$serverpath/info.js
+	cp info.sh $pkgdir$serverpath/info.sh
+
+	cp launch.sh $pkgdir$serverpath/launch.sh
+	chmod +x $pkgdir$serverpath/launch.sh
+
+	if [[ $buildyn =~ ^[Yy] ]]; then
+		cp $servertype-$mcver.jar $pkgdir$serverpath/
+	fi
+}
+
+
