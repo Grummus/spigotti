@@ -21,7 +21,7 @@ if ! [ -x "$(command -v tmux)" ]; then
 	exit 1
 fi
 
-# check for any active screens
+# check for any active sessions 
 # if none are found, create a new one and run the start script
 # otherwise prompt to reattatch to currently open screen
 echo "Checking for any running servers..."
