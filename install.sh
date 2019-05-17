@@ -6,7 +6,7 @@ if [ ! -d "$serverpath" ]; then
   mkdir $serverpath
 fi
 
-read -p "Enter desired server name" servername
+read -p "Enter desired server name: " servername
 
 echo "Copying files..."
 sudo cp minecraftserver.sh /usr/bin/minecraftserver
