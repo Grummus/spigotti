@@ -9,7 +9,7 @@
 
 ## arg 1:  the new package version
 post_install() {
-	cd /etc/minecraftserver
+	cd /opt/minecraftserver
 	npm install
 }
 
@@ -29,7 +29,7 @@ post_install() {
 pre_remove() {
 	# do something here
 	echo Cleaning up...
-	cd /etc/minecraftserver
+	cd /opt/minecraftserver
 	rm -rf node_modules
 	rm package-lock.json
 }

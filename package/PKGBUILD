@@ -13,7 +13,7 @@ arch=('any')
 url="http://github.com/Grummus/mctmux"
 license=('GPL')
 groups=()
-depends=('tmux' 'nodejs' 'npm' 'wget' 'jdk-openjdk')
+depends=('tmux' 'nodejs' 'npm' 'wget' 'jdk-openjdk' 'cowsay' 'lolcat' 'figlet')
 makedepends=()
 checkdepends=()
 optdepends=()
@@ -31,7 +31,7 @@ md5sums=('SKIP')
 validpgpkeys=()
 
 #prepare() {
-#	serverpath=/etc/minecraftserver
+#	serverpath=/opoptt/minecraftserver
 #	cd $pkgname
 #	chmod +x update.sh
 #	mkdir -p $pkgdir$serverpath
@@ -41,7 +41,7 @@ validpgpkeys=()
 build() {
 	read -p "Build spigot jar now? [y/n] " buildyn
 	if [[ $buildyn =~ ^[Yy] ]]; then
-		serverpath=/etc/minecraftserver
+		serverpath=/opt/minecraftserver
 		cd $pkgname
 		chmod +x update.sh
 		./update.sh
@@ -50,18 +50,19 @@ build() {
 }
 
 package() {
-	serverpath=/etc/minecraftserver
+	serverpath=/opt/minecraftserver
 	cd $pkgname
 	#read -p "Enter desired install location: (eg. /etc/minecraftserver) " serverpath
 	if [ ! -d "$pkgdir$serverpath" ]; then
 	  echo "Making serverdir..."
-	  mkdir -p $pkgdir/etc/minecraftserver
+	  mkdir -p $pkgdir/opt/minecraftserver
 	fi
 	mkdir -p $pkgdir/usr/bin
 
+	read -p "Enter Desired server name: " servername
+
 	cp minecraftserver.sh $pkgdir/usr/bin/minecraftserver
 	sed -i 's@<serverpath>@'"$serverpath"'@' $pkgdir/usr/bin/minecraftserver
-
 	cp update.sh $pkgdir$serverpath/update.sh
 	cp start.sh $pkgdir$serverpath/start.sh
 	chmod +x $pkgdir$serverpath/update.sh
@@ -74,6 +75,10 @@ package() {
 
 	cp launch.sh $pkgdir$serverpath/launch.sh
 	chmod +x $pkgdir$serverpath/launch.sh
+
+	cp term.sh $pkgdir$serverpath/term.sh
+	chmod +x $pkgdir$serverpath/term.sh
+	sed -i 's@<servername>@'"$servername"'@' $pkgdir$serverpath/term.sh
 
 	if [[ $buildyn =~ ^[Yy] ]]; then
 		cp $servertype-$mcver.jar $pkgdir$serverpath/

@@ -1,3 +1,6 @@
 *~
 node_modules/
-
+package/pkg/
+package/src/
+package/mctmux/
+package/mctmux*.xz
