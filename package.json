@@ -1,5 +1,5 @@
 {
-  "name": "sshminecraftserver",
+  "name": "spigotti",
   "version": "2.0.0",
   "description": "A little something I made so I can SSH into my Minecraft Server using GNU Screen",
   "main": "info.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Grummus/sshminecraftserver.git"
+    "url": "git+https://github.com/Grummus/spigotti.git"
   },
   "author": "Grummus",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Grummus/sshminecraftserver/issues"
+    "url": "https://github.com/Grummus/spigotti/issues"
   },
-  "homepage": "https://github.com/Grummus/sshminecraftserver#readme",
+  "homepage": "https://github.com/Grummus/spigotti#readme",
   "dependencies": {
     "colors": "^1.3.3",
     "gamedig": "^1.0.47"
