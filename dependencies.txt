@@ -1,0 +1,8 @@
+tmux
+nodejs
+npm
+figlet
+cowsay
+lolcat
+
+java (duh)

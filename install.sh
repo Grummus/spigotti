@@ -17,6 +17,8 @@ chmod +x $serverpath/start.sh
 
 cp launch.sh $serverpath/launch.sh
 chmod +x $serverpath/launch.sh
+cp term.sh $serverpath/term.sh
+chmod +x $serverpath/term.sh
 
 cp package.json $serverpath/package.json
 cp info.js $serverpath/info.js
