@@ -4,13 +4,13 @@
 # then please put 'unknown'.
 
 # Maintainer: Graham Klatt <grahamklatt@msn.com>
-pkgname=mctmux
+pkgname=spigotti
 pkgver=2.0.0
 pkgrel=1
 epoch=
 pkgdesc="A handy dandy launcher for a spigot server"
 arch=('any')
-url="http://github.com/Grummus/mctmux"
+url="http://github.com/Grummus/spigotti"
 license=('GPL')
 groups=()
 depends=('tmux' 'nodejs' 'npm' 'wget' 'jdk-openjdk' 'cowsay' 'lolcat' 'figlet')
@@ -22,9 +22,9 @@ conflicts=()
 replaces=()
 backup=()
 options=()
-install=mctmux.install
+install=spigotti.install
 changelog=
-source=('git+https://github.com/Grummus/mctmux.git')
+source=('git+https://github.com/Grummus/spigotti.git')
 noextract=()
 md5sums=('SKIP')
 
