@@ -12,7 +12,7 @@ echo -e "$servertype version $mcver with maximum $maxram and minimum $minram of 
 java -version
 echo
 echo -e "\e[93m[Ctrl+A] \e[96mthen \e[93m[D] \e[96mto detach"
-echo -e "type \e[93m'galacticraft' \e[96mto reattatch\e[0m"
+echo -e "type \e[93m'minecraftserver' \e[96mto reattatch\e[0m"
 echo
 read -p "Press [Enter] to start the server with the current settings..."
 

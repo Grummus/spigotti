@@ -1,4 +1,4 @@
-servername=<servername>
+servername="<servername>"
 
-cat figlet $servername | lolcat
+figlet $servername | lolcat
 bash
