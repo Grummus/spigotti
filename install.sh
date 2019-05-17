@@ -6,6 +6,8 @@ if [ ! -d "$serverpath" ]; then
   mkdir $serverpath
 fi
 
+read -p "Enter desired server name" servername
+
 echo "Copying files..."
 sudo cp minecraftserver.sh /usr/bin/minecraftserver
 sudo sed -i 's@<serverpath>@'"$serverpath"'@' /usr/bin/minecraftserver
@@ -19,6 +21,7 @@ cp launch.sh $serverpath/launch.sh
 chmod +x $serverpath/launch.sh
 cp term.sh $serverpath/term.sh
 chmod +x $serverpath/term.sh
+sed -i 's@<servername>@'"$servername"'@' $serverpath/term.sh
 
 cp package.json $serverpath/package.json
 cp info.js $serverpath/info.js
