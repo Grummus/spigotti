@@ -45,44 +45,53 @@ build() {
 		cd $pkgname
 		chmod +x update.sh
 		./update.sh
+		rm -rf buildtools
 	fi
 	export buildyn=$buildyn
 }
 
 package() {
 	serverpath=/opt/minecraftserver
-	cd $pkgname
+	#cd $pkgname
 	#read -p "Enter desired install location: (eg. /etc/minecraftserver) " serverpath
-	if [ ! -d "$pkgdir$serverpath" ]; then
-	  echo "Making serverdir..."
-	  mkdir -p $pkgdir/opt/minecraftserver
-	fi
+#	if [ ! -d "$pkgdir$serverpath" ]; then
+#	  echo "Making serverdir..."
+#	  mkdir -p $pkgdir/opt/minecraftserver
+#	fi
 	mkdir -p $pkgdir/usr/bin
-
+	install -g wheel -m g+rwx -d $pkgdir$serverpath
 	read -p "Enter Desired server name: " servername
 
-	cp minecraftserver.sh $pkgdir/usr/bin/minecraftserver
+	cp $pkgname/minecraftserver.sh $pkgdir/usr/bin/minecraftserver
 	sed -i 's@<serverpath>@'"$serverpath"'@' $pkgdir/usr/bin/minecraftserver
-	cp update.sh $pkgdir$serverpath/update.sh
-	cp start.sh $pkgdir$serverpath/start.sh
-	chmod +x $pkgdir$serverpath/update.sh
-	chmod +x $pkgdir$serverpath/start.sh
+
+for file in $pkgname/*; do
+	install -m 755 -g wheel "$file" $pkgdir$serverpath/
+done
+
+#	install -d "$pkgname" "$pkgdir$serverpath"
 
 
-	cp package.json $pkgdir$serverpath/package.json
-	cp info.js $pkgdir$serverpath/info.js
-	cp info.sh $pkgdir$serverpath/info.sh
-
-	cp launch.sh $pkgdir$serverpath/launch.sh
-	chmod +x $pkgdir$serverpath/launch.sh
-
-	cp term.sh $pkgdir$serverpath/term.sh
-	chmod +x $pkgdir$serverpath/term.sh
+#	cp update.sh $pkgdir$serverpath/update.sh
+#	cp start.sh $pkgdir$serverpath/start.sh
+#	chmod +x $pkgdir$serverpath/update.sh
+#	chmod +x $pkgdir$serverpath/start.sh
+#
+#
+#	cp package.json $pkgdir$serverpath/package.json
+#	cp info.js $pkgdir$serverpath/info.js
+#	cp info.sh $pkgdir$serverpath/info.sh
+#
+#	cp launch.sh $pkgdir$serverpath/launch.sh
+#	chmod +x $pkgdir$serverpath/launch.sh
+#
+#	cp term.sh $pkgdir$serverpath/term.sh
+#	chmod +x $pkgdir$serverpath/term.sh
 	sed -i 's@<servername>@'"$servername"'@' $pkgdir$serverpath/term.sh
-
-	if [[ $buildyn =~ ^[Yy] ]]; then
-		cp $servertype-$mcver.jar $pkgdir$serverpath/
-	fi
+#
+#	if [[ $buildyn =~ ^[Yy] ]]; then
+#		cp $servertype-$mcver.jar $pkgdir$serverpath/
+#	fi
 }
 
 
