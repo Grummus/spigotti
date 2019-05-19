@@ -4,35 +4,45 @@
 serverdir="<serverpath>" # <------CHANGE THIS
 updatescript="update.sh"
 
-echo "Grummus's Minecraft server launcher 2.0"
-echo "	Cobbled together by Graham Klatt 2019"
-echo
+# uncomment for borders fix with PuTTY
+export NCURSES_NO_UTF8_ACS=1
 
-if [ ! -d "$serverdir" ]; then
-	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
-	read -p "Press [Enter] to close..."
-	exit 1
-fi
+#if [ ! -d "$serverdir" ]; then
+#	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
+#	read -p "Press [Enter] to close..."
+#	exit 1
+#fi
+
+dialog --backtitle "Graham's Crappy Server Launcher"
 
 # Test to see if tmux is installed
-echo "Checking dependencies..."
 if ! [ -x "$(command -v tmux)" ]; then
-	echo -e "\e[91mtmux is not installed!\e[0m"
+	dialog --title "ERROR!" --msgbox "tmux is not installed!" 5 20
 	exit 1
 fi
+
+dialog --keep-window --title "Update?" \
+	--yesno "Update Server Jar?" 7 60
+
+response=$?
+case $response in
+	0) ./update.sh;;
+	1) echo "Skipping Update...";;
+	255) echo "wat";;
+esac
 
 # check for any active sessions 
 # if none are found, create a new one and run the start script
 # otherwise prompt to reattatch to currently open screen
-echo "Checking for any running servers..."
+
 if ! tmux ls | grep 'minecraft'; then
 	cd $serverdir
-	echo "You're good to go!"
-	read -p "Press [Enter] to continue..."
+	dialog --title "Checking for running servers..." --msgbox "You're good to go!" 5 40
+	clear
 	./launch.sh
 else
-	echo
-	read -p "Press [Enter] to reattatch or [CTRL+C] to cancel!"
+	dialog --title "Checking for running servers..." --msgbox "Welcome Back!" 5 40
+	clear
 	tmux attach -t minecraft
 fi
 
