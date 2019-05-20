@@ -30,8 +30,7 @@ function update() {
 	if [ "$?" = "0" ]; then
 		servertype=$(<"${INPUT}")
 		if [ "$servertype" = "quit" ];then
-			clear
-			exit 1
+			quit
 		fi
 	fi
 	dialog --backtitle "$backtitle" --title "$title" \
@@ -60,7 +59,7 @@ function update() {
 		clear
 		exit 255
 	else
-		exit 0
+		quit
 	fi
 else
 	dialog --backtitle "$backtitle" --title "WARNING!" --msgbox "Please shut your server off\nbefore updating!" 8 50
@@ -115,6 +114,13 @@ function initialize() {
 	tmux attach -t minecraft
 }
 
+function quit() {
+	[ -f $OUTPUT ] && rm $OUTPUT
+	[ -f $INPUT ] && rm $INPUT
+	clear
+	exit 0
+}
+
 # BEGINNING OF SCRIPT----------------------------------------------------------------------
 cd $serverdir
 check
@@ -150,6 +156,4 @@ case $response in
 	2) update && check;;
 esac
 
-[ -f $OUTPUT ] && rm $OUTPUT
-[ -f $INPUT ] && rm $INPUT
-clear
+quit
