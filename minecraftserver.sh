@@ -28,7 +28,6 @@ function update() {
 	--menu "Select A Server Type:" 15 50 4 \
 	spigot "(Recommended)" \
 	craftbukkit "" \
-	vanilla "Plain and Simple" \
 	quit "Ack! Get me out of here!" 2>"${INPUT}"
 	if [ "$?" = "0" ]; then
 		servertype=$(<"${INPUT}")
