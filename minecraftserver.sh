@@ -18,7 +18,6 @@ OUTPUT=/tmp/output.sh.$$
 trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
 cd $serverdir
-check
 
 # uncomment for borders fix with PuTTY
 export NCURSES_NO_UTF8_ACS=1
@@ -135,7 +134,7 @@ function quit() {
 }
 
 # BEGINNING OF SCRIPT----------------------------------------------------------------------
-
+check
 # check for command arguments
 [ $1 = update ] && update
 [ $1 = forcestart ] && start
