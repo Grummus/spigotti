@@ -3,36 +3,66 @@
 # server variables
 serverdir="<serverpath>" # <------CHANGE THIS
 updatescript="update.sh"
+backtitle="Graham's Crappy Server Launcher"
 
-echo "Grummus's Minecraft server launcher 2.0"
-echo "	Cobbled together by Graham Klatt 2019"
-echo
+INPUT=/tmp/menu.sh.$$
 
-if [ ! -d "$serverdir" ]; then
-	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
-	read -p "Press [Enter] to close..."
-	exit 1
-fi
+OUTPUT=/tmp/output.sh.$$
 
-# Test to see if tmux is installed
-echo "Checking dependencies..."
-if ! [ -x "$(command -v tmux)" ]; then
-	echo -e "\e[91mtmux is not installed!\e[0m"
-	exit 1
-fi
+export $serverdir
+
+trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
 # check for any active sessions 
 # if none are found, create a new one and run the start script
 # otherwise prompt to reattatch to currently open screen
-echo "Checking for any running servers..."
+function check() {
 if ! tmux ls | grep 'minecraft'; then
-	cd $serverdir
-	echo "You're good to go!"
-	read -p "Press [Enter] to continue..."
-	./launch.sh
+	serverstatus="Inactive"
 else
-	echo
-	read -p "Press [Enter] to reattatch or [CTRL+C] to cancel!"
-	tmux attach -t minecraft
+	serverstatus="Active"
+fi
+}
+
+function launch() {
+	case $serverstatus in
+		Inactive) clear && ./launch.sh;;
+		Active) clear && tmux attach -t minecraft;;
+	esac
+}
+
+cd $serverdir
+check
+
+# uncomment for borders fix with PuTTY
+export NCURSES_NO_UTF8_ACS=1
+
+#if [ ! -d "$serverdir" ]; then
+#	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
+#	read -p "Press [Enter] to close..."
+#	exit 1
+#fi
+
+# Test to see if tmux is installed
+if ! [ -x "$(command -v tmux)" ]; then
+	dialog --title "ERROR!" --msgbox "tmux is not installed!" 5 20
+	exit 1
 fi
 
+#dialog --keep-window --title "Update?" \
+#	--yesno "Update Server Jar?" 7 60
+dialog --backtitle "$backtitle" --title "Home" \
+--menu "Welcome!\nServer is currently $serverstatus" 15 50 4 \
+1 "Start/Reconnect" \
+2 "Update Server" \
+3 "Exit" 2>"${INPUT}"
+
+response=$(<"${INPUT}")
+case $response in
+	1) launch;; 
+	2) ./update.sh && check;;
+esac
+
+[ -f $OUTPUT ] && rm $OUTPUT
+[ -f $INPUT ] && rm $INPUT
+clear
