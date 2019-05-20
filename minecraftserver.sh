@@ -22,8 +22,6 @@ cd $serverdir
 # uncomment for borders fix with PuTTY
 export NCURSES_NO_UTF8_ACS=1
 
-
-
 function update() {
 	if ! tmux ls | grep 'minecraft'; then
 	dialog --backtitle "$backtitle" --title "$title" \
@@ -97,6 +95,7 @@ function info() {
 	sleep 10
 	clear
 	done
+	exit 1
 }
 
 function start() {
