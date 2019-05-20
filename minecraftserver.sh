@@ -119,10 +119,17 @@ function start() {
 
 function initialize() {
 	tmux new-session -s minecraft -d 'minecraftserver forcestart'
-	tmux split-window -h './term.sh'
+	tmux split-window -h 'minecraftserver term'
 	tmux split-window -v 'minecraftserver info'
 	tmux select-pane -L 
 	tmux attach -t minecraft
+}
+
+function term() {
+	servername="<servername>"
+
+	figlet $servername | lolcat
+	bash
 }
 
 function quit() {
@@ -138,6 +145,7 @@ check
 [ $1 = update ] && update
 [ $1 = forcestart ] && start
 [ $1 = info ] && info
+[ $1 = term ] && term
 
 # Test to see if tmux is installed
 if ! [ -x "$(command -v tmux)" ]; then
