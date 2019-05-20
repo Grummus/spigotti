@@ -92,7 +92,7 @@ check
 # uncomment for borders fix with PuTTY
 export NCURSES_NO_UTF8_ACS=1
 
-[ $a = update ] && update
+[ $1 = update ] && update
 
 #if [ ! -d "$serverdir" ]; then
 #	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
