@@ -137,7 +137,7 @@ check
 # check for command arguments
 [ $1 = update ] && update
 [ $1 = forcestart ] && start
-[ $1 = info] && info
+[ $1 = info ] && info
 
 # Test to see if tmux is installed
 if ! [ -x "$(command -v tmux)" ]; then
