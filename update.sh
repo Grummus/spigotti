@@ -9,10 +9,10 @@ function quit() {
 
 function update() {
 	#read -p "Server version: " mcver
-	#if [ ! -d "buildtools" ]; then
-	#	echo "Creating 'buildtools' directory..."
-	#	mkdir buildtools
-	#fi
+	if [ ! -d "buildtools" ]; then
+		echo "Creating 'buildtools' directory..."
+		mkdir buildtools
+	fi
 
 	cd buildtools
 	echo Downloading latest BuildTools...
@@ -38,9 +38,9 @@ Exit "Ack! Get me out of here!" 2>temp
 if [ "$?" = "0" ]; then
 	_return=$(cat temp)
 	case $_return in
-		1) servertype=spigot;;
-		2) servertype=craftbukkit;;
-		3) servertype=vanilla;;
+		1) servertype="spigot";;
+		2) servertype="craftbukkit";;
+		3) servertype="vanilla";;
 		4) quit;;
 	esac
 fi
