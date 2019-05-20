@@ -122,7 +122,7 @@ function start() {
 function initialize() {
 	tmux new-session -s minecraft -d 'minecraftserver forcestart'
 	tmux split-window -h './term.sh'
-	tmux split-window -v './info.sh'
+	tmux split-window -v 'minecraftserver info'
 	tmux select-pane -L 
 	tmux attach -t minecraft
 }
