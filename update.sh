@@ -51,7 +51,7 @@ if ! tmux ls | grep 'minecraft'; then
 	mcver="$(cat mcver.temp)"
 
 	update
-	if [ ! -d "$servertype-$mcver.jar" ]; then
+	if [ ! -f "$serverdir/$servertype-$mcver.jar" ]; then
 		clear
 		exit 255
 	else

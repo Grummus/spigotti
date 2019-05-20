@@ -9,6 +9,8 @@ INPUT=/tmp/menu.sh.$$
 
 OUTPUT=/tmp/output.sh.$$
 
+export $serverdir
+
 trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
 # check for any active sessions 

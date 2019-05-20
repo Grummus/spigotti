@@ -21,6 +21,7 @@ else
 	exit 1
 fi
 
+export serverdir=$serverpath
 
 if [ ! -d "$serverpath" ]; then
   echo "Making serverdir..."
@@ -60,16 +61,12 @@ cp info.sh $serverpath/info.sh
 cd $serverpath
 npm install
 ./update.sh
-if [ "$?" = "0" ]; then
+if [ -f "$serverpath/$servertype-$mcver.jar" ]; then
 	dialog --backtitle "$backtitle" --title "Success!" \
 	--msgbox "Everything built successfully!" 8 40
-	clear
-	exit 0
 else
 	dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
 	--msgbox "A build error occured!\nInstallation Incomplete" 8 40
-	clear
-	exit 255
 fi
 [ -f $OUTPUT ] && rm $OUTPUT
 [ -f $INPUT ] && rm $INPUT
