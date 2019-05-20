@@ -7,6 +7,9 @@ backtitle="Graham's Crappy Server Launcher"
 #here for testing
 servertype="spigot"
 mcver="1.13.2"
+maxram="2G"
+minram="1G"
+
 
 INPUT=/tmp/menu.sh.$$
 
@@ -78,12 +81,39 @@ fi
 
 function launch() {
 	case $serverstatus in
-		Inactive) clear && ./launch.sh;;
+		Inactive) clear && initialize;;
 		Active) clear && tmux attach -t minecraft;;
 	esac
 }
 
+function start() {
+	
 
+	# Display Minecraft and Java version then pause
+	echo -e "$servertype version $mcver with maximum $maxram and minimum $minram of RAM"
+	java -version
+	echo
+	echo -e "\e[93m[Ctrl+A] \e[96mthen \e[93m[D] \e[96mto detach"
+	echo -e "type \e[93m'minecraftserver' \e[96mto reattatch\e[0m"
+	echo
+	read -p "Press [Enter] to start the server with the current settings..."
+
+	# Start the Server with minram and maxram values
+	java -Xmx$maxram -Xms$minram -jar $servertype-$mcver.jar
+	echo -e "\e[91mServer stopped!\e[0m"
+	read -p "Press [Enter] to close this window..."
+	echo "bye bye!"
+	sleep 1
+	tmux kill-session -t minecraft
+}
+
+function initialize() {
+	tmux new-session -s minecraft -d 'minecraftserver forcestart'
+	tmux split-window -h './term.sh'
+	tmux split-window -v './info.sh'
+	tmux select-pane -L 
+	tmux attach -t minecraft
+}
 
 # BEGINNING OF SCRIPT----------------------------------------------------------------------
 cd $serverdir
@@ -93,7 +123,7 @@ check
 export NCURSES_NO_UTF8_ACS=1
 
 [ $1 = update ] && update
-
+[ $1 = forcestart ] && start
 #if [ ! -d "$serverdir" ]; then
 #	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
 #	read -p "Press [Enter] to close..."
