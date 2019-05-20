@@ -50,7 +50,6 @@ sed -i 's@<servername>@'"$servername"'@' $serverpath/term.sh
 
 cp package.json $serverpath/package.json
 cp info.js $serverpath/info.js
-cp info.sh $serverpath/info.sh
 
 cd $serverpath
 npm install
