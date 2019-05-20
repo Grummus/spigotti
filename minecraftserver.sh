@@ -2,8 +2,11 @@
 
 # server variables
 serverdir="<serverpath>" # <------CHANGE THIS
-updatescript="update.sh"
 backtitle="Graham's Crappy Server Launcher"
+
+#here for testing
+servertype="spigot"
+mcver="1.13.2"
 
 INPUT=/tmp/menu.sh.$$
 
@@ -13,6 +16,55 @@ export $serverdir
 
 trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
+function update() {
+	if ! tmux ls | grep 'minecraft'; then
+	dialog --backtitle "$backtitle" --title "$title" \
+	--menu "Select A Server Type:" 15 50 4 \
+	spigot "(Recommended)" \
+	craftbukkit "" \
+	vanilla "Plain and Simple" \
+	quit "Ack! Get me out of here!" 2>servertype.temp
+	if [ "$?" = "0" ]; then
+		servertype="$(cat servertype.temp)"
+		if [ "$servertype" = "quit" ];then
+			clear
+			exit 1
+		fi
+	fi
+	dialog --backtitle "$backtitle" --title "$title" \
+	--inputbox "Enter Server Version" 8 60 2>mcver.temp
+	mcver="$(cat mcver.temp)"
+
+	if [ ! -d "buildtools" ]; then
+		echo "Creating 'buildtools' directory..."
+		mkdir buildtools
+	fi
+	read -p "BUILDING $servertype VERSION $mcver"
+	cd buildtools
+	echo Downloading latest BuildTools...
+	wget -O BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+	echo Beginning Build Process...
+	java -jar BuildTools.jar --rev $mcver
+	echo Copying server JAR...
+	cp "$servertype-$mcver.jar" "../"
+	export servertype=$servertype
+	export mcver=$mcver
+	cd ..
+	echo
+	echo "Done!"
+	read -p "Press [Enter] to Continue..."
+	if [ ! -f "$serverdir/$servertype-$mcver.jar" ]; then
+		clear
+		exit 255
+	else
+		exit 0
+	fi
+else
+	dialog --backtitle "$backtitle" --title "WARNING!" --msgbox "Please shut your server off\nbefore updating!" 8 50
+	exit 255
+fi
+
+}
 # check for any active sessions 
 # if none are found, create a new one and run the start script
 # otherwise prompt to reattatch to currently open screen
@@ -31,6 +83,9 @@ function launch() {
 	esac
 }
 
+
+
+# BEGINNING OF SCRIPT----------------------------------------------------------------------
 cd $serverdir
 check
 
@@ -60,7 +115,7 @@ dialog --backtitle "$backtitle" --title "Home" \
 response=$(<"${INPUT}")
 case $response in
 	1) launch;; 
-	2) ./update.sh && check;;
+	2) update && check;;
 esac
 
 [ -f $OUTPUT ] && rm $OUTPUT
