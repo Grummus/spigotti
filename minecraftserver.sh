@@ -26,17 +26,17 @@ function update() {
 	spigot "(Recommended)" \
 	craftbukkit "" \
 	vanilla "Plain and Simple" \
-	quit "Ack! Get me out of here!" 2>servertype.temp
+	quit "Ack! Get me out of here!" 2>"${INPUT}"
 	if [ "$?" = "0" ]; then
-		servertype="$(cat servertype.temp)"
+		servertype=$(<"${INPUT}")
 		if [ "$servertype" = "quit" ];then
 			clear
 			exit 1
 		fi
 	fi
 	dialog --backtitle "$backtitle" --title "$title" \
-	--inputbox "Enter Server Version" 8 60 2>mcver.temp
-	mcver="$(cat mcver.temp)"
+	--inputbox "Enter Server Version" 8 60 2>"${INPUT}"
+	mcver=$(<"${INPUT}")
 
 	if [ ! -d "buildtools" ]; then
 		echo "Creating 'buildtools' directory..."
