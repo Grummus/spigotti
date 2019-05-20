@@ -15,8 +15,15 @@ INPUT=/tmp/menu.sh.$$
 
 OUTPUT=/tmp/output.sh.$$
 
-
 trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
+
+cd $serverdir
+check
+
+# uncomment for borders fix with PuTTY
+export NCURSES_NO_UTF8_ACS=1
+
+
 
 function update() {
 	if ! tmux ls | grep 'minecraft'; then
@@ -85,9 +92,15 @@ function launch() {
 	esac
 }
 
-function start() {
-	
+function info() {
+	while true
+	do node info.js | cowsay | lolcat -F 1
+	sleep 10
+	clear
+	done
+}
 
+function start() {
 	# Display Minecraft and Java version then pause
 	echo -e "$servertype version $mcver with maximum $maxram and minimum $minram of RAM"
 	java -version
@@ -122,19 +135,11 @@ function quit() {
 }
 
 # BEGINNING OF SCRIPT----------------------------------------------------------------------
-cd $serverdir
-check
 
-# uncomment for borders fix with PuTTY
-export NCURSES_NO_UTF8_ACS=1
-
+# check for command arguments
 [ $1 = update ] && update
 [ $1 = forcestart ] && start
-#if [ ! -d "$serverdir" ]; then
-#	echo "'$serverdir' does not exist! Did you remember change it in the launch script?"
-#	read -p "Press [Enter] to close..."
-#	exit 1
-#fi
+[ $1 = info] && info
 
 # Test to see if tmux is installed
 if ! [ -x "$(command -v tmux)" ]; then
@@ -142,8 +147,6 @@ if ! [ -x "$(command -v tmux)" ]; then
 	exit 1
 fi
 
-#dialog --keep-window --title "Update?" \
-#	--yesno "Update Server Jar?" 7 60
 dialog --backtitle "$backtitle" --title "Home" \
 --menu "Welcome!\nServer is currently $serverstatus" 15 50 4 \
 1 "Start/Reconnect" \
