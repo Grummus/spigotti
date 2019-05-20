@@ -60,7 +60,7 @@ cp info.sh $serverpath/info.sh
 
 cd $serverpath
 npm install
-./update.sh
+minecraftserver update
 if [ -f "$serverpath/$servertype-$mcver.jar" ]; then
 	dialog --backtitle "$backtitle" --title "Success!" \
 	--msgbox "Everything built successfully!" 8 40
