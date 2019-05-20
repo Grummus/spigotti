@@ -44,9 +44,11 @@ sudo cp minecraftserver.sh /usr/bin/minecraftserver
 sudo sed -i 's@<serverpath>@'"$serverpath"'@' /usr/bin/minecraftserver
 sudo chmod +x /usr/bin/minecraftserver
 
-cp term.sh $serverpath/term.sh
-chmod +x $serverpath/term.sh
-sed -i 's@<servername>@'"$servername"'@' $serverpath/term.sh
+sudo sed -i 's@<servername>@'"$servername"'@' /usr/bin/minecraftserver
+
+figlet $servername | lolcat
+bash
+
 
 cp package.json $serverpath/package.json
 cp info.js $serverpath/info.js
