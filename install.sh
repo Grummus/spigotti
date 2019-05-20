@@ -55,13 +55,7 @@ cp info.sh $serverpath/info.sh
 cd $serverpath
 npm install
 minecraftserver update
-if [ -f "$serverpath/$servertype-$mcver.jar" ]; then
-	dialog --backtitle "$backtitle" --title "Success!" \
-	--msgbox "Everything built successfully!" 8 40
-else
-	dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
-	--msgbox "A build error occured!\nInstallation Incomplete" 8 40
-fi
+
 [ -f $OUTPUT ] && rm $OUTPUT
 [ -f $INPUT ] && rm $INPUT
 clear

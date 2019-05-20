@@ -49,17 +49,18 @@ function update() {
 	java -jar BuildTools.jar --rev $mcver
 	echo Copying server JAR...
 	cp "$servertype-$mcver.jar" "../"
-	export servertype="$servertype"
-	export mcver="$mcver"
 	cd ..
 	echo
 	echo "Done!"
 	read -p "Press [Enter] to Continue..."
-	if [ ! -f "$serverdir/$servertype-$mcver.jar" ]; then
-		clear
-		exit 255
-	else
+	if [ -f "$serverdir/$servertype-$mcver.jar" ]; then
+		dialog --backtitle "$backtitle" --title "Success!" \
+		--msgbox "Everything built successfully!" 8 40
 		quit
+	else
+		dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
+		--msgbox "A build error occured!\nInstallation Incomplete" 8 40
+		exit 1
 	fi
 else
 	dialog --backtitle "$backtitle" --title "WARNING!" --msgbox "Please shut your server off\nbefore updating!" 8 50
