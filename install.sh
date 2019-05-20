@@ -43,13 +43,7 @@ fi
 sudo cp minecraftserver.sh /usr/bin/minecraftserver
 sudo sed -i 's@<serverpath>@'"$serverpath"'@' /usr/bin/minecraftserver
 sudo chmod +x /usr/bin/minecraftserver
-cp update.sh $serverpath/update.sh
-cp start.sh $serverpath/start.sh
-chmod +x $serverpath/update.sh
-chmod +x $serverpath/start.sh
 
-cp launch.sh $serverpath/launch.sh
-chmod +x $serverpath/launch.sh
 cp term.sh $serverpath/term.sh
 chmod +x $serverpath/term.sh
 sed -i 's@<servername>@'"$servername"'@' $serverpath/term.sh
