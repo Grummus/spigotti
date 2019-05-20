@@ -59,6 +59,7 @@ if [ "$?" = "0" ]; then
 	--msgbox "Everything built successfully!" 8 40
 	clear
 	exit 0
+	rm *.temp
 else
 	dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
 	--msgbox "A build error occured!\nInstallation Incomplete" 8 40
