@@ -35,10 +35,14 @@ function update() {
 		if [ "$servertype" = "quit" ];then
 			quit
 		fi
+	else
+		exit 1
 	fi
+
 	dialog --backtitle "$backtitle" --title "$title" \
 	--inputbox "Enter Server Version" 8 60 2>"${INPUT}"
 	mcver=$(<"${INPUT}")
+	[ ! "$?" = 0 ] && exit 1
 
 	if [ ! -d "buildtools" ]; then
 		echo "Creating 'buildtools' directory..."
