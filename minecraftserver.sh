@@ -49,8 +49,8 @@ function update() {
 	java -jar BuildTools.jar --rev $mcver
 	echo Copying server JAR...
 	cp "$servertype-$mcver.jar" "../"
-	export servertype=$servertype
-	export mcver=$mcver
+	export servertype="$servertype"
+	export mcver="$mcver"
 	cd ..
 	echo
 	echo "Done!"
