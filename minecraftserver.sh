@@ -5,6 +5,11 @@ serverdir="<serverpath>" # <------CHANGE THIS
 updatescript="update.sh"
 backtitle="Graham's Crappy Server Launcher"
 
+INPUT=/tmp/menu.sh.$$
+
+OUTPUT=/tmp/output.sh.$$
+
+trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
 # check for any active sessions 
 # if none are found, create a new one and run the start script
@@ -22,7 +27,6 @@ function launch() {
 		Inactive) clear && ./launch.sh;;
 		Active) clear && tmux attach -t minecraft;;
 	esac
-	exit
 }
 
 cd $serverdir
@@ -49,14 +53,14 @@ dialog --backtitle "$backtitle" --title "Home" \
 --menu "Welcome!\nServer is currently $serverstatus" 15 50 4 \
 1 "Start/Reconnect" \
 2 "Update Server" \
-3 "Exit" 2>option.temp
+3 "Exit" 2>"${INPUT}"
 
-response="$(cat option.temp)"
+response=$(<"${INPUT}")
 case $response in
 	1) launch;; 
 	2) ./update.sh && check;;
-	3) exit;;
-	255) exit;;
 esac
 
-
+[ -f $OUTPUT ] && rm $OUTPUT
+[ -f $INPUT ] && rm $INPUT
+clear

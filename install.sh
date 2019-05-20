@@ -5,12 +5,18 @@ export NCURSES_NO_UTF8_ACS=1
 backtitle="Graham's Crappy Server Launcher"
 title="Installer"
 
+INPUT=/tmp/menu.sh.$$
+
+OUTPUT=/tmp/output.sh.$$
+
+trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
+
 #read -p "Enter desired install location: (eg. /home/user/server) " serverpath
 dialog --backtitle "$backtitle" --title "$title" \
---inputbox "Enter Desired install location" 8 60 2>location.temp
+--inputbox "Enter Desired install location" 8 60 2>"${INPUT}"
 
 if [ "$?" = "0" ]; then
-	serverpath=$(cat location.temp)
+	serverpath=$(<"${INPUT}")
 else
 	exit 1
 fi
@@ -23,10 +29,10 @@ fi
 
 #read -p "Enter desired server name: " servername
 dialog --backtitle "$backtitle" --title "$title" \
---inputbox "Enter Desired server name:" 8 60 2>servername.temp
+--inputbox "Enter Desired server name:" 8 60 2>"${INPUT}"
 
 if [ "$?" = "0" ]; then
-	servername=$(cat servername.temp)
+	servername=$(<"${INPUT}")
 else
 	exit 1
 fi
@@ -59,10 +65,12 @@ if [ "$?" = "0" ]; then
 	--msgbox "Everything built successfully!" 8 40
 	clear
 	exit 0
-	rm *.temp
 else
 	dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
 	--msgbox "A build error occured!\nInstallation Incomplete" 8 40
 	clear
 	exit 255
 fi
+[ -f $OUTPUT ] && rm $OUTPUT
+[ -f $INPUT ] && rm $INPUT
+clear
