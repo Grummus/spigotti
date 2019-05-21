@@ -24,7 +24,7 @@ export NCURSES_NO_UTF8_ACS=1
 
 function update() {
 	if ! tmux ls | grep 'minecraft'; then
-	dialog --backtitle "$backtitle" --title "$title" \
+	whiptail --backtitle "$backtitle" --title "$title" \
 	--menu "Select A Server Type:" 15 50 4 \
 	spigot "(Recommended)" \
 	craftbukkit "" \
@@ -38,7 +38,7 @@ function update() {
 		exit 1
 	fi
 
-	dialog --backtitle "$backtitle" --title "$title" \
+	whiptail --backtitle "$backtitle" --title "$title" \
 	--inputbox "Enter Server Version" 8 60 2>"${INPUT}"
 	mcver=$(<"${INPUT}")
 	[ ! "$?" = 0 ] && exit 1
@@ -60,16 +60,16 @@ function update() {
 	echo "Done!"
 	read -p "Press [Enter] to Continue..."
 	if [ -f "$serverdir/$servertype-$mcver.jar" ]; then
-		dialog --backtitle "$backtitle" --title "Success!" \
+		whiptail --backtitle "$backtitle" --title "Success!" \
 		--msgbox "Everything built successfully!" 8 40
 		quit
 	else
-		dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
+		whiptail --backtitle "$backtitle" --title "!!!ERROR!!!" \
 		--msgbox "A build error occured!\nInstallation Incomplete" 8 40
 		exit 1
 	fi
 else
-	dialog --backtitle "$backtitle" --title "WARNING!" --msgbox "Please shut your server off\nbefore updating!" 8 50
+	whiptail --backtitle "$backtitle" --title "WARNING!" --msgbox "Please shut your server off\nbefore updating!" 8 50
 	exit 255
 fi
 
@@ -152,11 +152,11 @@ check
 
 # Test to see if tmux is installed
 if ! [ -x "$(command -v tmux)" ]; then
-	dialog --title "ERROR!" --msgbox "tmux is not installed!" 5 20
+	whiptail --title "ERROR!" --msgbox "tmux is not installed!" 5 20
 	exit 1
 fi
 
-dialog --backtitle "$backtitle" --title "Home" \
+whiptail --backtitle "$backtitle" --title "Home" \
 --menu "Welcome!\nServer is currently $serverstatus" 15 50 4 \
 1 "Start/Reconnect" \
 2 "Update Server" \
