@@ -12,7 +12,7 @@ OUTPUT=/tmp/output.sh.$$
 trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
 #read -p "Enter desired install location: (eg. /home/user/server) " serverpath
-dialog --backtitle "$backtitle" --title "$title" \
+whiptail --backtitle "$backtitle" --title "$title" \
 --inputbox "Enter Desired install location" 8 60 2>"${INPUT}"
 
 if [ "$?" = "0" ]; then
@@ -29,8 +29,8 @@ if [ ! -d "$serverpath" ]; then
 fi
 
 #read -p "Enter desired server name: " servername
-dialog --backtitle "$backtitle" --title "$title" \
---inputbox "Enter Desired server name:" 8 60 2>"${INPUT}"
+whiptail --backtitle "$backtitle" --title "$title" \
+--inputbox "Enter Desired server name:" 8 20 2>"${INPUT}"
 
 if [ "$?" = "0" ]; then
 	servername=$(<"${INPUT}")
@@ -43,31 +43,17 @@ fi
 sudo cp minecraftserver.sh /usr/bin/minecraftserver
 sudo sed -i 's@<serverpath>@'"$serverpath"'@' /usr/bin/minecraftserver
 sudo chmod +x /usr/bin/minecraftserver
-cp update.sh $serverpath/update.sh
-cp start.sh $serverpath/start.sh
-chmod +x $serverpath/update.sh
-chmod +x $serverpath/start.sh
 
-cp launch.sh $serverpath/launch.sh
-chmod +x $serverpath/launch.sh
-cp term.sh $serverpath/term.sh
-chmod +x $serverpath/term.sh
-sed -i 's@<servername>@'"$servername"'@' $serverpath/term.sh
+sudo sed -i 's@<servername>@'"$servername"'@' /usr/bin/minecraftserver
 
 cp package.json $serverpath/package.json
 cp info.js $serverpath/info.js
-cp info.sh $serverpath/info.sh
 
 cd $serverpath
+clear
 npm install
-./update.sh
-if [ -f "$serverpath/$servertype-$mcver.jar" ]; then
-	dialog --backtitle "$backtitle" --title "Success!" \
-	--msgbox "Everything built successfully!" 8 40
-else
-	dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
-	--msgbox "A build error occured!\nInstallation Incomplete" 8 40
-fi
+minecraftserver update
+
 [ -f $OUTPUT ] && rm $OUTPUT
 [ -f $INPUT ] && rm $INPUT
 clear
