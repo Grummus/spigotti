@@ -47,7 +47,7 @@ function update() {
 		echo "Creating 'buildtools' directory..."
 		mkdir buildtools
 	fi
-	read -p "BUILDING $servertype VERSION $mcver"
+	echo "BUILDING $servertype VERSION $mcver"
 	cd buildtools
 	echo Downloading latest BuildTools...
 	wget -O BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
