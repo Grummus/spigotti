@@ -30,7 +30,7 @@ fi
 
 #read -p "Enter desired server name: " servername
 whiptail --backtitle "$backtitle" --title "$title" \
---inputbox "Enter Desired server name:" 8 60 2>"${INPUT}"
+--inputbox "Enter Desired server name:" 8 20 2>"${INPUT}"
 
 if [ "$?" = "0" ]; then
 	servername=$(<"${INPUT}")

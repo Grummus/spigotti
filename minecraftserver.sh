@@ -40,7 +40,7 @@ function update() {
 	fi
 
 	whiptail --backtitle "$backtitle" --title "$title" \
-	--inputbox "Enter Server Version" 8 60 2>"${INPUT}"
+	--inputbox "Enter Server Version" 8 30 2>"${INPUT}"
 	mcver=$(<"${INPUT}")
 	[ ! "$?" = 0 ] && exit 1
 	clear
