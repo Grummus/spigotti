@@ -23,6 +23,7 @@ cd $serverdir
 export NCURSES_NO_UTF8_ACS=1
 
 function update() {
+	title="Server Updater"
 	if ! tmux ls | grep 'minecraft'; then
 	whiptail --backtitle "$backtitle" --title "$title" \
 	--menu "Select A Server Type:" 15 50 4 \
