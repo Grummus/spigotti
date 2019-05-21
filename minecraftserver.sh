@@ -3,10 +3,13 @@
 # server variables
 serverdir="<serverpath>" # <------CHANGE THIS
 backtitle="Graham's Crappy Server Launcher"
+CONFIG="$serverdir/config"
+
+source "$CONFIG"
 
 #here for testing
-servertype="spigot"
-mcver="1.13.2"
+#servertype="spigot"
+#mcver="1.13.2"
 maxram="2G"
 minram="1G"
 
@@ -21,6 +24,39 @@ cd $serverdir
 
 # uncomment for borders fix with PuTTY
 export NCURSES_NO_UTF8_ACS=1
+
+function whitelist() {
+	title="Whitelist"
+	CHOICE=$(dialog --backtitle "$backtitle" --title "$title" \
+	--menu "What would you like to do?" 15 50 2 \
+	1 "View players" \
+	2 "Add player" \
+	3 "Remove player" 3>&2 2>&1 1>&3
+	)
+
+	case $CHOICE in
+		1) 
+			names=$(cat whitelist.json | grep name)
+			listlength=$(echo "$names" | wc -l)
+			if [ ! $listlength = 0 ]; then
+				((listlength+=5))
+				dialog --backtitle "$backtitle" --title "$title" \
+					--msgbox "$names" $listlength 40
+			fi
+			whitelist
+			;;
+		2) 
+			dialog --backtitle "$backtitle" --title "$title" \
+			--inputbox "Enter player name:" 8 30 2>"${INPUT}"
+			clear
+			playername=$(<"${INPUT}")
+			id=$(GET https://api.mojang.com/users/profiles/minecraft/$playername)
+			echo $id
+			exit
+			;;
+		3) echo whoa there;;
+	esac	
+}
 
 function update() {
 	title="Server Updater"
@@ -59,6 +95,9 @@ function update() {
 	cd ..
 	echo
 	echo "Done!"
+	echo "Writing Config File..."
+	echo "servertype=$servertype" >> config
+	echo "mcver=$mcver" >> config
 	read -p "Press [Enter] to Continue..."
 	if [ -f "$serverdir/$servertype-$mcver.jar" ]; then
 		dialog --backtitle "$backtitle" --title "Success!" \
@@ -150,6 +189,7 @@ check
 [ $1 = forcestart ] && start
 [ $1 = info ] && info
 [ $1 = term ] && term
+[ $1 = whitelist ] && whitelist
 
 # Test to see if tmux is installed
 if ! [ -x "$(command -v tmux)" ]; then

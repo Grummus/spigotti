@@ -38,6 +38,7 @@ else
 	exit 1
 fi
 
+clear
 
 #echo "Copying files..."
 sudo cp minecraftserver.sh /usr/bin/minecraftserver
