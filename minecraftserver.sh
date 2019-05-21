@@ -42,7 +42,7 @@ function update() {
 	--inputbox "Enter Server Version" 8 60 2>"${INPUT}"
 	mcver=$(<"${INPUT}")
 	[ ! "$?" = 0 ] && exit 1
-
+	clear
 	if [ ! -d "buildtools" ]; then
 		echo "Creating 'buildtools' directory..."
 		mkdir buildtools

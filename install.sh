@@ -50,6 +50,7 @@ cp package.json $serverpath/package.json
 cp info.js $serverpath/info.js
 
 cd $serverpath
+clear
 npm install
 minecraftserver update
 
