@@ -12,7 +12,7 @@ OUTPUT=/tmp/output.sh.$$
 trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
 #read -p "Enter desired install location: (eg. /home/user/server) " serverpath
-whiptail --backtitle "$backtitle" --title "$title" \
+dialog --backtitle "$backtitle" --title "$title" \
 --inputbox "Enter Desired install location" 8 60 2>"${INPUT}"
 
 if [ "$?" = "0" ]; then
@@ -29,7 +29,7 @@ if [ ! -d "$serverpath" ]; then
 fi
 
 #read -p "Enter desired server name: " servername
-whiptail --backtitle "$backtitle" --title "$title" \
+dialog --backtitle "$backtitle" --title "$title" \
 --inputbox "Enter Desired server name:" 8 20 2>"${INPUT}"
 
 if [ "$?" = "0" ]; then
@@ -38,6 +38,7 @@ else
 	exit 1
 fi
 
+clear
 
 #echo "Copying files..."
 sudo cp minecraftserver.sh /usr/bin/minecraftserver

@@ -3,10 +3,13 @@
 # server variables
 serverdir="<serverpath>" # <------CHANGE THIS
 backtitle="Graham's Crappy Server Launcher"
+CONFIG="$serverdir/config"
+
+source "$CONFIG"
 
 #here for testing
-servertype="spigot"
-mcver="1.13.2"
+#servertype="spigot"
+#mcver="1.13.2"
 maxram="2G"
 minram="1G"
 
@@ -22,10 +25,43 @@ cd $serverdir
 # uncomment for borders fix with PuTTY
 export NCURSES_NO_UTF8_ACS=1
 
+function whitelist() {
+	title="Whitelist"
+	CHOICE=$(dialog --backtitle "$backtitle" --title "$title" \
+	--menu "What would you like to do?" 15 50 2 \
+	1 "View players" \
+	2 "Add player" \
+	3 "Remove player" 3>&2 2>&1 1>&3
+	)
+
+	case $CHOICE in
+		1) 
+			names=$(cat whitelist.json | grep name)
+			listlength=$(echo "$names" | wc -l)
+			if [ ! $listlength = 0 ]; then
+				((listlength+=5))
+				dialog --backtitle "$backtitle" --title "$title" \
+					--msgbox "$names" $listlength 40
+			fi
+			whitelist
+			;;
+		2) 
+			dialog --backtitle "$backtitle" --title "$title" \
+			--inputbox "Enter player name:" 8 30 2>"${INPUT}"
+			clear
+			playername=$(<"${INPUT}")
+			id=$(GET https://api.mojang.com/users/profiles/minecraft/$playername)
+			echo $id
+			exit
+			;;
+		3) echo whoa there;;
+	esac	
+}
+
 function update() {
 	title="Server Updater"
 	if ! tmux ls | grep 'minecraft'; then
-	whiptail --backtitle "$backtitle" --title "$title" \
+	dialog --backtitle "$backtitle" --title "$title" \
 	--menu "Select A Server Type:" 15 50 4 \
 	spigot "(Recommended)" \
 	craftbukkit "" \
@@ -39,7 +75,7 @@ function update() {
 		exit 1
 	fi
 
-	whiptail --backtitle "$backtitle" --title "$title" \
+	dialog --backtitle "$backtitle" --title "$title" \
 	--inputbox "Enter Server Version" 8 30 2>"${INPUT}"
 	mcver=$(<"${INPUT}")
 	[ ! "$?" = 0 ] && exit 1
@@ -59,18 +95,21 @@ function update() {
 	cd ..
 	echo
 	echo "Done!"
+	echo "Writing Config File..."
+	echo "servertype=$servertype" >> config
+	echo "mcver=$mcver" >> config
 	read -p "Press [Enter] to Continue..."
 	if [ -f "$serverdir/$servertype-$mcver.jar" ]; then
-		whiptail --backtitle "$backtitle" --title "Success!" \
+		dialog --backtitle "$backtitle" --title "Success!" \
 		--msgbox "Everything built successfully!" 8 40
 		quit
 	else
-		whiptail --backtitle "$backtitle" --title "!!!ERROR!!!" \
+		dialog --backtitle "$backtitle" --title "!!!ERROR!!!" \
 		--msgbox "A build error occured!\nInstallation Incomplete" 8 40
 		exit 1
 	fi
 else
-	whiptail --backtitle "$backtitle" --title "WARNING!" --msgbox "Please shut your server off\nbefore updating!" 8 50
+	dialog --backtitle "$backtitle" --title "WARNING!" --msgbox "Please shut your server off\nbefore updating!" 8 50
 	exit 255
 fi
 
@@ -150,15 +189,16 @@ check
 [ $1 = forcestart ] && start
 [ $1 = info ] && info
 [ $1 = term ] && term
+[ $1 = whitelist ] && whitelist
 
 # Test to see if tmux is installed
 if ! [ -x "$(command -v tmux)" ]; then
-	whiptail --title "ERROR!" --msgbox "tmux is not installed!" 5 20
+	dialog --title "ERROR!" --msgbox "tmux is not installed!" 5 20
 	exit 1
 fi
 
 serverinfo="$(node info.js)"
-whiptail --backtitle "$backtitle" --title "Home" \
+dialog --backtitle "$backtitle" --title "Home" \
 --menu "Welcome!\n$serverinfo" 15 50 4 \
 1 "Start/Reconnect" \
 2 "Update Server" \
