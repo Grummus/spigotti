@@ -157,8 +157,9 @@ if ! [ -x "$(command -v tmux)" ]; then
 	exit 1
 fi
 
+serverinfo=$(<"${node info.js}")
 whiptail --backtitle "$backtitle" --title "Home" \
---menu "Welcome!\nServer is currently $serverstatus" 15 50 4 \
+--menu "Welcome!\n$serverinfo" 15 50 4 \
 1 "Start/Reconnect" \
 2 "Update Server" \
 3 "Exit" 2>"${INPUT}"
