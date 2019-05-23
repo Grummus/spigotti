@@ -55,6 +55,14 @@ clear
 npm install
 minecraftserver update
 
+dialog --backtitle "$backtitle" --title "$title" \
+	--yesno "Accept eula?" 8 50
+eula=$?
+if [ $eula = 0 ]; then 
+	sed -i 's/eula=false/eula=true/g' eula.txt && read -p "Eula Accepted!"
+fi
+
 [ -f $OUTPUT ] && rm $OUTPUT
 [ -f $INPUT ] && rm $INPUT
-clear
+minecraftserver
+
