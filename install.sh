@@ -49,6 +49,8 @@ sudo sed -i 's@<servername>@'"$servername"'@' /usr/bin/minecraftserver
 
 cp package.json $serverpath/package.json
 cp info.js $serverpath/info.js
+cp restart.sh $serverpath/restart.sh
+chmod +x $serverpath/restart.sh
 
 cd $serverpath
 clear
