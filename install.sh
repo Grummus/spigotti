@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# yo this is a test comment
+
 export NCURSES_NO_UTF8_ACS=1 
 
 backtitle="Graham's Crappy Server Launcher"
