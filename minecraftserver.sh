@@ -69,7 +69,8 @@ function update() {
 	title="Server Updater"
 	if ! tmux ls | grep 'minecraft'; then
 		dialog --backtitle "$backtitle" --title "$title" \
-		--menu "Select A Server Type:" 15 50 4 \
+		--menu "Select A Server Type:" 15 50 5 \
+		paper "(Recommended, fastest install)" \
 		spigot "(Recommended)" \
 		craftbukkit "" \
 		quit "Ack! Get me out of here!" 2>"${INPUT}"
@@ -87,21 +88,30 @@ function update() {
 		mcver=$(<"${INPUT}")
 		[ ! "$?" = 0 ] && exit 1
 		clear
-		if [ ! -d "buildtools" ]; then
-			echo "Creating 'buildtools' directory..."
-			mkdir buildtools
+
+		if ["$servertype" == "paper"]; then
+			echo "DOWNLOADING $servertype VERSION $mcver"
+			wget https://papermc.io/api/v1/paper/1.16.4/latest/download -O "$servertype-$mcver.jar"
+			echo "Done!"
+		else
+			if [ ! -d "buildtools" ]; then
+				echo "Creating 'buildtools' directory..."
+				mkdir buildtools
+			fi
+			echo "BUILDING $servertype VERSION $mcver"
+			cd buildtools
+			echo Downloading latest BuildTools...
+			wget -O BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+			echo Beginning Build Process...
+			java -jar BuildTools.jar --rev $mcver
+			echo Copying server JAR...
+			cp "$servertype-$mcver.jar" "../"
+			cd ..
+			echo
+			echo "Done!"
 		fi
-		echo "BUILDING $servertype VERSION $mcver"
-		cd buildtools
-		echo Downloading latest BuildTools...
-		wget -O BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-		echo Beginning Build Process...
-		java -jar BuildTools.jar --rev $mcver
-		echo Copying server JAR...
-		cp "$servertype-$mcver.jar" "../"
-		cd ..
-		echo
-		echo "Done!"
+
+		
 		echo "Writing Config File..."
 		echo "servertype=$servertype" >> config
 		echo "mcver=$mcver" >> config
