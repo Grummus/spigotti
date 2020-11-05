@@ -71,7 +71,7 @@ function update() {
 		dialog --backtitle "$backtitle" --title "$title" \
 		--menu "Select A Server Type:" 15 50 5 \
 		paper "(Recommended, fastest install)" \
-		spigot "(Recommended)" \
+		spigot "" \
 		craftbukkit "" \
 		quit "Ack! Get me out of here!" 2>"${INPUT}"
 		if [ "$?" = "0" ]; then
