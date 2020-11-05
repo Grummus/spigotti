@@ -89,7 +89,7 @@ function update() {
 		[ ! "$?" = 0 ] && exit 1
 		clear
 
-		if ["$servertype" == "paper"]; then
+		if [ "$servertype" = "paper" ]; then
 			echo "DOWNLOADING $servertype VERSION $mcver"
 			wget https://papermc.io/api/v1/paper/1.16.4/latest/download -O "$servertype-$mcver.jar"
 			echo "Done!"
